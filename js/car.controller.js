@@ -67,9 +67,7 @@ function onSetFilterBy(filterBy) {
     filterBy = setCarFilter(filterBy)
     renderCars()
 
-    const queryParams = `
-        ?vendor=${filterBy.vendor}&minSpeed=${filterBy.minSpeed}
-    `
+    const queryParams = `?vendor=${filterBy.vendor}&minSpeed=${filterBy.minSpeed}`
     const newUrl = 
         window.location.protocol + "//" + 
         window.location.host + 
@@ -99,15 +97,15 @@ function renderFilterByQueryParams() {
 
     if (!filterBy.vendor && !filterBy.minSpeed) return
 
-    document.querySelector('.filter-vendor-select').value = filterBy.vendor
-    document.querySelector('.filter-speed-range').value = filterBy.minSpeed
+    document.querySelector('.filter-by select').value = filterBy.vendor
+    document.querySelector('.filter-by input').value = filterBy.minSpeed
     
     setCarFilter(filterBy)
 }
 
 function onSetSortBy() {
-    const prop = document.querySelector('.sort-by').value
-    const isDesc = document.querySelector('.sort-desc').checked
+    const prop = document.querySelector('.sort-by select').value
+    const isDesc = document.querySelector('.sort-by .sort-desc').checked
 
     if (!prop) return
 

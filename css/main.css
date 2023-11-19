@@ -91,7 +91,7 @@ button:hover {
 	margin-inline-end: 2em;
 }
 
-.filter-vendor-select {
+.filter-by select {
 	text-transform: capitalize;
 }
 
