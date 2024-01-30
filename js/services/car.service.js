@@ -70,21 +70,6 @@ function updateCar(carId, newSpeed) {
     return car
 }
 
-function setCarFilter(filterBy = {}) {
-    if (filterBy.vendor !== undefined) gFilterBy.vendor = filterBy.vendor
-    if (filterBy.minSpeed !== undefined) gFilterBy.minSpeed = filterBy.minSpeed
-    
-    return gFilterBy
-}
-
-function setCarSort(sortBy = {}) {
-    if (sortBy.maxSpeed !== undefined) {
-        gCars.sort((c1, c2) => (c1.maxSpeed - c2.maxSpeed) * sortBy.maxSpeed)
-    } else if (sortBy.vendor !== undefined) {
-        gCars.sort((c1, c2) => c1.vendor.localeCompare(c2.vendor) * sortBy.vendor)
-    }
-}
-
 function _createCar({ vendor, maxSpeed }) {
     return {
         id: makeId(),
