@@ -141,3 +141,43 @@ button:hover {
 .highlite {
 	background-color: plum;
 }
+
+dialog.car-edit-modal {
+    padding: 2em;
+    background: linear-gradient(to bottom, #eee, #fff);
+    border: 1px solid lightgray
+}
+
+dialog.car-edit-modal form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 250px;
+}
+
+dialog.car-edit-modal form > h2 {
+    margin-block-end: .5em;
+}
+
+dialog.car-edit-modal form > img {
+    position: absolute;
+    top: 30px;
+    right: 20px;
+
+    width: 130px;
+}
+
+dialog.car-edit-modal form > input, 
+dialog.car-edit-modal form > select {
+    align-self: start;
+    height: 1.6em;
+    border: 1px solid lightgray;
+}
+
+dialog.car-edit-modal form .actions {
+    margin-block-start: 1em;
+}
+
+dialog *:focus {
+    outline: 1px solid gray;
+}

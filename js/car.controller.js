@@ -67,6 +67,11 @@ function onSaveCar() {
     flashMsg(`Car Saved (id: ${car.id})`)
 }
 
+function onSelectVendor(elVendor) {
+    const elCarImg = document.querySelector('.car-edit-modal img')
+    elCarImg.src = `img/${elVendor.value}.png`
+}
+
 function onCloseCarEdit() {
     document.querySelector('.car-edit-modal').close()
 }
