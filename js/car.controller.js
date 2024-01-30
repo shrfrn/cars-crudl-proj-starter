@@ -1,12 +1,18 @@
 'use strict'
 
+const options = {
+    filterBy: { txt: '', minSpeed: 0 },
+    sortBy: { price: -1 },
+    page: { idx: 0, size: 5 },
+}
+
 function onInit() {
     renderFilterByQueryParams()
     renderCars()
 }
 
 function renderCars() {
-    var cars = getCars()
+    var cars = getCars(options)
     var strHtmls = cars.map(car => `
         <article class="car-preview">
             <button title="Delete car" class="btn-remove" onclick="onRemoveCar('${car.id}')">X</button>
@@ -64,7 +70,10 @@ function onReadCar(carId) {
 }
 
 function onSetFilterBy(filterBy) {
-    filterBy = setCarFilter(filterBy)
+    const elVendor = document.querySelector('.filter-by select')
+    const elMinSpeed = document.querySelector('.filter-by input')
+
+    options.filterBy = { txt: elVendor.value, minSpeed: +elMinSpeed.value }
     renderCars()
 
     const queryParams = `?vendor=${filterBy.vendor}&minSpeed=${filterBy.minSpeed}`
@@ -90,17 +99,15 @@ function flashMsg(msg) {
 
 function renderFilterByQueryParams() {
     const queryParams = new URLSearchParams(window.location.search)
-    const filterBy = {
-        vendor: queryParams.get('vendor') || '',
+    options.filterBy = {
+        txt: queryParams.get('vendor') || '',
         minSpeed: +queryParams.get('minSpeed') || 0
     }
 
-    if (!filterBy.vendor && !filterBy.minSpeed) return
+    if (!options.filterBy.vendor && !options.filterBy.minSpeed) return
 
-    document.querySelector('.filter-by select').value = filterBy.vendor
-    document.querySelector('.filter-by input').value = filterBy.minSpeed
-    
-    setCarFilter(filterBy)
+    document.querySelector('.filter-by select').value = options.filterBy.txt
+    document.querySelector('.filter-by input').value = options.filterBy.minSpeed
 }
 
 function onSetSortBy() {

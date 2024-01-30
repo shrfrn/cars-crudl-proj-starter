@@ -3,14 +3,13 @@
 const STORAGE_KEY = 'carDB'
 
 var gCars
-var gFilterBy = { vendor: '', minSpeed: 0 }
 
 _createCars()
 
-function getCars() {
+function getCars(options = {}) {
     var cars = gCars.filter(car =>
-        car.vendor.includes(gFilterBy.vendor) &&
-        car.maxSpeed >= gFilterBy.minSpeed)
+        car.vendor.includes(options.filterBy.txt) &&
+        car.maxSpeed >= options.filterBy.minSpeed)
 
     return cars
 }
@@ -40,13 +39,6 @@ function updateCar(carId, newSpeed) {
 
     _saveCarsToStorage()
     return car
-}
-
-function setCarFilter(filterBy = {}) {
-    if (filterBy.vendor !== undefined) gFilterBy.vendor = filterBy.vendor
-    if (filterBy.minSpeed !== undefined) gFilterBy.minSpeed = filterBy.minSpeed
-    
-    return gFilterBy
 }
 
 function setCarSort(sortBy = {}) {
