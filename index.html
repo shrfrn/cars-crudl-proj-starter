@@ -64,6 +64,24 @@
 
 		<div class="user-msg"></div>
 
+        <dialog class="car-edit-modal">
+            <form onsubmit="onSaveCar()" method="dialog">
+                <h2>Add Car</h2>
+                <select>
+                    <option value="">Choose vendor...</option>
+                    <option>audu</option>
+                    <option>mitsu</option>
+                    <option>fiak</option>
+                    <option>subali</option>
+                </select>
+                <input class="max-speed" type="number" placeholder="Enter max. speed">
+                <div class="actions">
+                    <button type="button" onclick="onCloseCarEdit()">Cancel</button>
+                    <button>Save</button>
+                </div>
+            </form>
+        </dialog>
+
 		<script src="js/services/util.service.js"></script>
 		<script src="js/services/storage.service.js"></script>
 		<script src="js/services/car.service.js"></script>

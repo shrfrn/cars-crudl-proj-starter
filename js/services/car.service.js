@@ -22,24 +22,33 @@ function removeCar(carId) {
     _saveCarsToStorage()
 }
 
-function addCar(vendor) {
-    const car = _createCar(vendor)
-    gCars.unshift(car)
+function saveCar(carToAdd) {
+    if(carToAdd.id) {
+        var car = updateCar(carToAdd)
+    } else {
+        var car = addCar(carToAdd)
+    }
 
     _saveCarsToStorage()
+    return car
+}
+
+function updateCar(carToUpdate) {
+    const idx = gCars.findIndex(car => car.id === carToUpdate.id)
+    gCars[idx] = carToUpdate
+
+    return carToUpdate
+}
+
+function addCar(carToAdd) {
+    var car = _createCar(carToAdd)
+    gCars.unshift(car)
+
     return car
 }
 
 function getCarById(carId) {
     return gCars.find(car => carId === car.id)
-}
-
-function updateCar(carId, newSpeed) {
-    const car = gCars.find(car => car.id === carId)
-    car.maxSpeed = newSpeed
-
-    _saveCarsToStorage()
-    return car
 }
 
 function setCarFilter(filterBy = {}) {
@@ -57,11 +66,13 @@ function setCarSort(sortBy = {}) {
     }
 }
 
-function _createCar(vendor) {
+function _createCar({ vendor, maxSpeed }) {
+    console.log('vendor: ', vendor)
+    console.log('maxSpeed: ', maxSpeed)
     return {
         id: makeId(),
         vendor,
-        maxSpeed: getRandomIntInclusive(50, 250),
+        maxSpeed: maxSpeed || getRandomIntInclusive(50, 250),
         desc: makeLorem()
     }
 }
@@ -77,7 +88,7 @@ function _createCars() {
     
     for (let i = 0; i < 12; i++) {
         var vendor = vendors[getRandomInt(0, vendors.length)]
-        gCars.push(_createCar(vendor))
+        gCars.push(_createCar({ vendor }))
     }
     _saveCarsToStorage()
 }

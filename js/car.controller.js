@@ -1,5 +1,7 @@
 'use strict'
 
+var gCurrCarId
+
 function onInit() {
     renderFilterByQueryParams()
     renderCars()
@@ -15,7 +17,7 @@ function renderCars() {
             <p>Up to <span>${car.maxSpeed}</span> KMH</p>
             
             <button onclick="onReadCar('${car.id}')">Details</button>
-            <button onclick="onUpdateCar('${car.id}')">Update</button>
+            <button onclick="onEditCar('${car.id}')">Update</button>
 
             <img title="Photo of ${car.vendor}" 
                 src="img/${car.vendor}.png" 
@@ -33,23 +35,40 @@ function onRemoveCar(carId) {
 }
 
 function onAddCar() {
-    var vendor = prompt('vendor?')
-    if (!vendor) return
-
-    const car = addCar(vendor)
-    renderCars()
-    flashMsg(`Car Added (id: ${car.id})`)
+    const elCarEditModal = document.querySelector('.car-edit-modal')
+    elCarEditModal.showModal()
 }
 
-function onUpdateCar(carId) {
+function onEditCar(carId) {
     const car = getCarById(carId)
+    gCurrCarId = carId
 
-    var newSpeed = +prompt('Speed?', car.maxSpeed)
-    if (!newSpeed || car.maxSpeed === newSpeed) return 
+    const elCarEditModal = document.querySelector('.car-edit-modal')
+    const elVendor = elCarEditModal.querySelector('select')
+    const elMaxSpeed = elCarEditModal.querySelector('input')
 
-    const updatedCar = updateCar(carId, newSpeed)
+    elVendor.value = car.vendor
+    elMaxSpeed.value = car.maxSpeed
+
+    elCarEditModal.showModal()
+}
+
+function onSaveCar() {
+    const elVendor = document.querySelector('.car-edit-modal select')
+    const elMaxSpeed = document.querySelector('.car-edit-modal input')
+    
+    const vendor = elVendor.value
+    const maxSpeed = elMaxSpeed.value
+    
+    const car = saveCar({ id: gCurrCarId, vendor, maxSpeed })
+    gCurrCarId = ''
+
     renderCars()
-    flashMsg(`Speed updated to: ${updatedCar.maxSpeed}`)
+    flashMsg(`Car Saved (id: ${car.id})`)
+}
+
+function onCloseCarEdit() {
+    document.querySelector('.car-edit-modal').close()
 }
 
 function onReadCar(carId) {
