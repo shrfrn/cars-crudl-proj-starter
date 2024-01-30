@@ -3,15 +3,26 @@
 const STORAGE_KEY = 'carDB'
 
 var gCars
-var gFilterBy = { vendor: '', minSpeed: 0 }
 
 _createCars()
 
-function getCars() {
+function getCars(options = {}) {
     var cars = gCars.filter(car =>
-        car.vendor.includes(gFilterBy.vendor) &&
-        car.maxSpeed >= gFilterBy.minSpeed)
+        car.vendor.includes(options.filterBy.txt) &&
+        car.maxSpeed >= options.filterBy.minSpeed)
 
+    if (options.sortBy.maxSpeed) {
+        cars.sort((c1, c2) => (c1.maxSpeed - c2.maxSpeed) * options.sortBy.maxSpeed)
+    } else if (options.sortBy.vendor) {
+        cars.sort((c1, c2) => c1.vendor.localeCompare(c2.vendor) * options.sortBy.vendor)
+    }
+
+    if(options.page) {
+        const fromIdx = options.page.idx * options.page.size
+        cars = cars.slice(fromIdx, fromIdx + options.page.size)
+
+        if(cars.length === 0) return null
+    }
     return cars
 }
 
@@ -51,6 +62,14 @@ function getCarById(carId) {
     return gCars.find(car => carId === car.id)
 }
 
+function updateCar(carId, newSpeed) {
+    const car = gCars.find(car => car.id === carId)
+    car.maxSpeed = newSpeed
+
+    _saveCarsToStorage()
+    return car
+}
+
 function setCarFilter(filterBy = {}) {
     if (filterBy.vendor !== undefined) gFilterBy.vendor = filterBy.vendor
     if (filterBy.minSpeed !== undefined) gFilterBy.minSpeed = filterBy.minSpeed
@@ -67,8 +86,6 @@ function setCarSort(sortBy = {}) {
 }
 
 function _createCar({ vendor, maxSpeed }) {
-    console.log('vendor: ', vendor)
-    console.log('maxSpeed: ', maxSpeed)
     return {
         id: makeId(),
         vendor,
