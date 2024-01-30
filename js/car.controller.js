@@ -13,6 +13,10 @@ function onInit() {
 
 function renderCars() {
     var cars = getCars(options)
+    if(!cars) {
+        options.page.idx = 0
+        cars = getCars(options)
+    }
     var strHtmls = cars.map(car => `
         <article class="car-preview">
             <button title="Delete car" class="btn-remove" onclick="onRemoveCar('${car.id}')">X</button>
@@ -118,5 +122,10 @@ function onSetSortBy() {
     if (!prop) return
 
     options.sortBy[prop] = (isDesc) ? -1 : 1
+    renderCars()
+}
+
+function onNextPage() {
+    options.page.idx++
     renderCars()
 }
