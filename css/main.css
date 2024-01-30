@@ -96,20 +96,24 @@ button:hover {
 }
 
 .modal {
-	position: absolute;
-	top: 0px;
-	right: -300px;
-
-	width: 300px;
+	width: 400px;
 	padding: 10px;
-	background-color: #111;
 
-	text-align: center;
+    padding: 2em;
+    border: 1px solid lightgray;
+    transition: opacity 0.5s;
 }
 
-.modal.open {
-	right: 0;
-	transition: right 0.5s;
+@starting-style {
+    .modal {
+        opacity: 0;
+    }
+}
+
+.modal img {
+    float: left;
+    width: 50%;
+    margin-inline-end: .5em;
 }
 
 .modal h3 {

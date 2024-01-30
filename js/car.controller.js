@@ -91,12 +91,13 @@ function onReadCar(carId) {
     elModal.querySelector('h3').innerText = car.vendor
     elModal.querySelector('h4 span').innerText = car.maxSpeed
     elModal.querySelector('p').innerText = car.desc
+    elModal.querySelector('img').src = `img/${car.vendor}.png`
 
-    elModal.classList.add('open')
+    elModal.showModal()
 }
 
 function onCloseModal() {
-    document.querySelector('.modal').classList.remove('open')
+    document.querySelector('.modal').close()
 }
 
 // Filter, Sort & Pagination
