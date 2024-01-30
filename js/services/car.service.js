@@ -11,6 +11,11 @@ function getCars(options = {}) {
         car.vendor.includes(options.filterBy.txt) &&
         car.maxSpeed >= options.filterBy.minSpeed)
 
+    if (options.sortBy.maxSpeed) {
+        cars.sort((c1, c2) => (c1.maxSpeed - c2.maxSpeed) * options.sortBy.maxSpeed)
+    } else if (options.sortBy.vendor) {
+        cars.sort((c1, c2) => c1.vendor.localeCompare(c2.vendor) * options.sortBy.vendor)
+    }
     return cars
 }
 
@@ -39,14 +44,6 @@ function updateCar(carId, newSpeed) {
 
     _saveCarsToStorage()
     return car
-}
-
-function setCarSort(sortBy = {}) {
-    if (sortBy.maxSpeed !== undefined) {
-        gCars.sort((c1, c2) => (c1.maxSpeed - c2.maxSpeed) * sortBy.maxSpeed)
-    } else if (sortBy.vendor !== undefined) {
-        gCars.sort((c1, c2) => c1.vendor.localeCompare(c2.vendor) * sortBy.vendor)
-    }
 }
 
 function _createCar(vendor) {

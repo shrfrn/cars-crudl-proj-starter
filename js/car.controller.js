@@ -2,7 +2,7 @@
 
 const options = {
     filterBy: { txt: '', minSpeed: 0 },
-    sortBy: { price: -1 },
+    sortBy: {},
     page: { idx: 0, size: 5 },
 }
 
@@ -114,16 +114,9 @@ function onSetSortBy() {
     const prop = document.querySelector('.sort-by select').value
     const isDesc = document.querySelector('.sort-by .sort-desc').checked
 
+    options.sortBy = {}
     if (!prop) return
 
-    const sortBy = {}
-    sortBy[prop] = (isDesc) ? -1 : 1
-
-    // Shorter Syntax:
-    // const sortBy = {
-    //     [prop] : (isDesc)? -1 : 1
-    // }
-
-    setCarSort(sortBy)
+    options.sortBy[prop] = (isDesc) ? -1 : 1
     renderCars()
 }
