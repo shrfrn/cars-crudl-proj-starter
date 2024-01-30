@@ -3,11 +3,11 @@
 const options = {
     filterBy: { txt: '', minSpeed: 0 },
     sortBy: {},
-    page: { idx: 0, size: 5 },
+    page: { idx: 0, size: 4 },
 }
 
 function onInit() {
-    renderFilterByQueryParams()
+    readQueryParams()
     renderCars()
 }
 
@@ -73,20 +73,15 @@ function onReadCar(carId) {
     elModal.classList.add('open')
 }
 
-function onSetFilterBy(filterBy) {
+function onSetFilterBy() {
     const elVendor = document.querySelector('.filter-by select')
     const elMinSpeed = document.querySelector('.filter-by input')
 
     options.filterBy = { txt: elVendor.value, minSpeed: +elMinSpeed.value }
+    options.page.idx = 0
+
     renderCars()
-
-    const queryParams = `?vendor=${filterBy.vendor}&minSpeed=${filterBy.minSpeed}`
-    const newUrl = 
-        window.location.protocol + "//" + 
-        window.location.host + 
-        window.location.pathname + queryParams
-
-    window.history.pushState({ path: newUrl }, '', newUrl)
+    setQueryParams()
 }
 
 function onCloseModal() {
@@ -101,17 +96,62 @@ function flashMsg(msg) {
     setTimeout(() => el.classList.remove('open'), 3000)
 }
 
-function renderFilterByQueryParams() {
+function readQueryParams() {
     const queryParams = new URLSearchParams(window.location.search)
     options.filterBy = {
         txt: queryParams.get('vendor') || '',
         minSpeed: +queryParams.get('minSpeed') || 0
     }
 
-    if (!options.filterBy.vendor && !options.filterBy.minSpeed) return
+    if(queryParams.get('sortBy')) {
+        const prop = queryParams.get('sortBy')
+        const dir = queryParams.get('sortDir')
+        options.sortBy[prop] = dir
+    }
 
+    if(queryParams.get('pageIdx')) {
+        options.page.idx = +queryParams.get('pageIdx')
+        options.page.size = +queryParams.get('pageSize')
+    }
+    reflectQueryParams()
+}
+
+function reflectQueryParams() {
+    
     document.querySelector('.filter-by select').value = options.filterBy.txt
     document.querySelector('.filter-by input').value = options.filterBy.minSpeed
+    
+    const sortKeys = Object.keys(options.sortBy)
+    const sortBy = sortKeys[0]
+    const dir = options.sortBy[sortKeys[0]]
+
+    document.querySelector('.sort-by select').value = sortBy || ''
+    document.querySelector('.sort-by input').checked = (dir === -1) ? true : false
+}
+
+function setQueryParams() {
+    const queryParams = new URLSearchParams()
+
+    queryParams.set('vendor', options.filterBy.txt)
+    queryParams.set('minSpeed', options.filterBy.minSpeed)
+
+    const sortKeys = Object.keys(options.sortBy)
+    if(sortKeys.length) {
+        queryParams.set('sortBy', sortKeys[0])
+        queryParams.set('sortDir', options.sortBy[sortKeys[0]])
+    }
+
+    if(options.page) {
+        queryParams.set('pageIdx', options.page.idx)
+        queryParams.set('pageSize', options.page.size)
+    }
+
+    const newUrl = 
+        window.location.protocol + "//" + 
+        window.location.host + 
+        window.location.pathname + '?' + queryParams.toString()
+
+    window.history.pushState({ path: newUrl }, '', newUrl)
 }
 
 function onSetSortBy() {
@@ -122,10 +162,15 @@ function onSetSortBy() {
     if (!prop) return
 
     options.sortBy[prop] = (isDesc) ? -1 : 1
+    options.page.idx = 0
+
     renderCars()
+    setQueryParams()
 }
 
 function onNextPage() {
     options.page.idx++
+
     renderCars()
+    setQueryParams()
 }
