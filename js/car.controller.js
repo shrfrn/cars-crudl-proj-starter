@@ -1,24 +1,16 @@
 'use strict'
 
-var gCurrCarId
-
 const options = {
     filterBy: { txt: '', minSpeed: 0 },
     sortBy: {},
-    page: { idx: 0, size: 4 },
 }
 
 function onInit() {
-    readQueryParams()
     renderCars()
 }
 
 function renderCars() {
-    var cars = getCars(options)
-    if(!cars) {
-        options.page.idx = 0
-        cars = getCars(options)
-    }
+    var cars = getCars()
     var strHtmls = cars.map(car => `
         <article class="car-preview">
             <button title="Delete car" class="btn-remove" onclick="onRemoveCar('${car.id}')">X</button>
@@ -27,7 +19,7 @@ function renderCars() {
             <p>Up to <span>${car.maxSpeed}</span> KMH</p>
             
             <button onclick="onReadCar('${car.id}')">Details</button>
-            <button onclick="onEditCar('${car.id}')">Update</button>
+            <button onclick="onUpdateCar('${car.id}')">Update</button>
 
             <img title="Photo of ${car.vendor}" 
                 src="img/${car.vendor}.png" 
@@ -38,6 +30,8 @@ function renderCars() {
     document.querySelector('.cars-container').innerHTML = strHtmls.join('')
 }
 
+// CRUD
+
 function onRemoveCar(carId) {
     removeCar(carId)
     renderCars()
@@ -45,22 +39,23 @@ function onRemoveCar(carId) {
 }
 
 function onAddCar() {
-    const elCarEditModal = document.querySelector('.car-edit-modal')
-    elCarEditModal.showModal()
+    var vendor = prompt('vendor?')
+    if (!vendor) return
+
+    const car = addCar(vendor)
+    renderCars()
+    flashMsg(`Car Added (id: ${car.id})`)
 }
 
-function onEditCar(carId) {
+function onUpdateCar(carId) {
     const car = getCarById(carId)
-    gCurrCarId = carId
 
-    const elCarEditModal = document.querySelector('.car-edit-modal')
-    const elVendor = elCarEditModal.querySelector('select')
-    const elMaxSpeed = elCarEditModal.querySelector('input')
+    var newSpeed = +prompt('Speed?', car.maxSpeed)
+    if (!newSpeed || car.maxSpeed === newSpeed) return 
 
-    elVendor.value = car.vendor
-    elMaxSpeed.value = car.maxSpeed
-
-    elCarEditModal.showModal()
+    const updatedCar = updateCar(carId, newSpeed)
+    renderCars()
+    flashMsg(`Speed updated to: ${updatedCar.maxSpeed}`)
 }
 
 function onSaveCar() {
@@ -69,13 +64,14 @@ function onSaveCar() {
     
     const vendor = elVendor.value
     const maxSpeed = elMaxSpeed.value
-    
-    const car = saveCar({ id: gCurrCarId, vendor, maxSpeed })
-    gCurrCarId = ''
+
+    // TODO Save the car
 
     renderCars()
     flashMsg(`Car Saved (id: ${car.id})`)
 }
+
+// Car Edit Dialog
 
 function onSelectVendor(elVendor) {
     const elCarImg = document.querySelector('.car-edit-modal img')
@@ -85,6 +81,8 @@ function onSelectVendor(elVendor) {
 function onCloseCarEdit() {
     document.querySelector('.car-edit-modal').close()
 }
+
+// Details modal
 
 function onReadCar(carId) {
     const car = getCarById(carId)
@@ -97,28 +95,25 @@ function onReadCar(carId) {
     elModal.classList.add('open')
 }
 
-function onSetFilterBy() {
-    const elVendor = document.querySelector('.filter-by select')
-    const elMinSpeed = document.querySelector('.filter-by input')
-
-    options.filterBy = { txt: elVendor.value, minSpeed: +elMinSpeed.value }
-    options.page.idx = 0
-
-    renderCars()
-    setQueryParams()
-}
-
 function onCloseModal() {
     document.querySelector('.modal').classList.remove('open')
 }
 
-function flashMsg(msg) {
-    const el = document.querySelector('.user-msg')
+// Filter, Sort & Pagination
 
-    el.innerText = msg
-    el.classList.add('open')
-    setTimeout(() => el.classList.remove('open'), 3000)
+function onSetFilterBy() {
+    console.log('Filter set.')
 }
+
+function onSetSortBy() {
+    console.log('Sort set.')
+}
+
+function onNextPage() {
+    console.log('Getting next page...')
+}
+
+// Query Params
 
 function readQueryParams() {
     const queryParams = new URLSearchParams(window.location.search)
@@ -178,23 +173,12 @@ function setQueryParams() {
     window.history.pushState({ path: newUrl }, '', newUrl)
 }
 
-function onSetSortBy() {
-    const prop = document.querySelector('.sort-by select').value
-    const isDesc = document.querySelector('.sort-by .sort-desc').checked
+// UI
 
-    options.sortBy = {}
-    if (!prop) return
+function flashMsg(msg) {
+    const el = document.querySelector('.user-msg')
 
-    options.sortBy[prop] = (isDesc) ? -1 : 1
-    options.page.idx = 0
-
-    renderCars()
-    setQueryParams()
-}
-
-function onNextPage() {
-    options.page.idx++
-
-    renderCars()
-    setQueryParams()
+    el.innerText = msg
+    el.classList.add('open')
+    setTimeout(() => el.classList.remove('open'), 3000)
 }

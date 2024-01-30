@@ -7,23 +7,23 @@ var gCars
 _createCars()
 
 function getCars(options = {}) {
-    var cars = gCars.filter(car =>
-        car.vendor.includes(options.filterBy.txt) &&
-        car.maxSpeed >= options.filterBy.minSpeed)
+    // var cars = gCars.filter(car =>
+    //     car.vendor.includes(options.filterBy.txt) &&
+    //     car.maxSpeed >= options.filterBy.minSpeed)
 
-    if (options.sortBy.maxSpeed) {
-        cars.sort((c1, c2) => (c1.maxSpeed - c2.maxSpeed) * options.sortBy.maxSpeed)
-    } else if (options.sortBy.vendor) {
-        cars.sort((c1, c2) => c1.vendor.localeCompare(c2.vendor) * options.sortBy.vendor)
-    }
+    // if (options.sortBy.maxSpeed) {
+    //     cars.sort((c1, c2) => (c1.maxSpeed - c2.maxSpeed) * options.sortBy.maxSpeed)
+    // } else if (options.sortBy.vendor) {
+    //     cars.sort((c1, c2) => c1.vendor.localeCompare(c2.vendor) * options.sortBy.vendor)
+    // }
 
-    if(options.page) {
-        const fromIdx = options.page.idx * options.page.size
-        cars = cars.slice(fromIdx, fromIdx + options.page.size)
+    // if(options.page) {
+    //     const fromIdx = options.page.idx * options.page.size
+    //     cars = cars.slice(fromIdx, fromIdx + options.page.size)
 
-        if(cars.length === 0) return null
-    }
-    return cars
+    //     if(cars.length === 0) return null
+    // }
+    return gCars
 }
 
 function removeCar(carId) {
@@ -33,26 +33,8 @@ function removeCar(carId) {
     _saveCarsToStorage()
 }
 
-function saveCar(carToAdd) {
-    if(carToAdd.id) {
-        var car = updateCar(carToAdd)
-    } else {
-        var car = addCar(carToAdd)
-    }
-
-    _saveCarsToStorage()
-    return car
-}
-
-function updateCar(carToUpdate) {
-    const idx = gCars.findIndex(car => car.id === carToUpdate.id)
-    gCars[idx] = carToUpdate
-
-    return carToUpdate
-}
-
-function addCar(carToAdd) {
-    var car = _createCar(carToAdd)
+function addCar(vendor) {
+    var car = _createCar(vendor)
     gCars.unshift(car)
 
     return car
@@ -70,7 +52,7 @@ function updateCar(carId, newSpeed) {
     return car
 }
 
-function _createCar({ vendor, maxSpeed }) {
+function _createCar(vendor, maxSpeed) {
     return {
         id: makeId(),
         vendor,
