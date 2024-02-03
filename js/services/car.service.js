@@ -37,6 +37,7 @@ function addCar(vendor) {
     var car = _createCar(vendor)
     gCars.unshift(car)
 
+    _saveCarsToStorage()
     return car
 }
 
