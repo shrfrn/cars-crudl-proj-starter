@@ -7,22 +7,6 @@ var gCars
 _createCars()
 
 function getCars(options = {}) {
-    // var cars = gCars.filter(car =>
-    //     car.vendor.includes(options.filterBy.txt) &&
-    //     car.maxSpeed >= options.filterBy.minSpeed)
-
-    // if (options.sortBy.maxSpeed) {
-    //     cars.sort((c1, c2) => (c1.maxSpeed - c2.maxSpeed) * options.sortBy.maxSpeed)
-    // } else if (options.sortBy.vendor) {
-    //     cars.sort((c1, c2) => c1.vendor.localeCompare(c2.vendor) * options.sortBy.vendor)
-    // }
-
-    // if(options.page) {
-    //     const fromIdx = options.page.idx * options.page.size
-    //     cars = cars.slice(fromIdx, fromIdx + options.page.size)
-
-    //     if(cars.length === 0) return null
-    // }
     return gCars
 }
 
