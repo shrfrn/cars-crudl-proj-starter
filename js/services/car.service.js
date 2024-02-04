@@ -57,7 +57,7 @@ function _createCars() {
     
     for (let i = 0; i < 12; i++) {
         var vendor = vendors[getRandomInt(0, vendors.length)]
-        gCars.push(_createCar({ vendor }))
+        gCars.push(_createCar(vendor))
     }
     _saveCarsToStorage()
 }
