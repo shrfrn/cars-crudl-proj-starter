@@ -133,10 +133,10 @@ function readQueryParams() {
         options.page.idx = +queryParams.get('pageIdx')
         options.page.size = +queryParams.get('pageSize')
     }
-    reflectQueryParams()
+    renderQueryParams()
 }
 
-function reflectQueryParams() {
+function renderQueryParams() {
     
     document.querySelector('.filter-by select').value = options.filterBy.txt
     document.querySelector('.filter-by input').value = options.filterBy.minSpeed
