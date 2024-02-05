@@ -9,9 +9,14 @@ _createCars()
 
 function getCars(options = {}) {
     const cars = gCars.filter(car => 
-                    car.maxSpeed >= options.filterBy.minSpeed &&
-                    car.vendor.toLowerCase().includes(options.filterBy.txt))
-
+        car.maxSpeed >= options.filterBy.minSpeed &&
+        car.vendor.toLowerCase().includes(options.filterBy.txt))
+        
+    if(options.sortBy.vendor){
+        cars.sort((car1, car2) => car1.vendor.localeCompare(car2.vendor) * options.sortBy.maxSpeed)
+    } else if(options.sortBy.maxSpeed) {
+        cars.sort((car1, car2) => (car1.maxSpeed - car2.maxSpeed) * options.sortBy.maxSpeed)
+    }
     return cars
 }
 
