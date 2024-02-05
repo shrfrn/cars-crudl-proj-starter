@@ -21,7 +21,7 @@ function renderVendors() {
 }
 
 function renderCars() {
-    var cars = getCars()
+    var cars = getCars(gQueryOptions)
     var strHtmls = cars.map(car => `
         <article class="car-preview">
             <button title="Delete car" class="btn-remove" onclick="onRemoveCar('${car.id}')">X</button>
@@ -77,7 +77,7 @@ function onSaveCar() {
     const elMaxSpeed = elForm.querySelector('input')
     
     const vendor = elVendor.value
-    const maxSpeed = elMaxSpeed.value
+    const maxSpeed = +elMaxSpeed.value
 
     if(gCarToEdit) {
         var car = updateCar(gCarToEdit.id, vendor, maxSpeed)
@@ -123,7 +123,13 @@ function onCloseModal() {
 // Filter, Sort & Pagination
 
 function onSetFilterBy() {
-    console.log('Filter set.')
+    const elVendor = document.querySelector('.filter-by .vendor-list')
+    const elMinSpeed = document.querySelector('.filter-by input')
+
+    gQueryOptions.filterBy.txt = elVendor.value
+    gQueryOptions.filterBy.minSpeed = elMinSpeed.value
+
+    renderCars()
 }
 
 function onSetSortBy() {

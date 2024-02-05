@@ -8,8 +8,11 @@ const gVendors = ['fiak', 'audu', 'subali', 'mitsu']
 _createCars()
 
 function getCars(options = {}) {
-    return gCars
+    const cars = gCars.filter(car => 
+                    car.maxSpeed >= options.filterBy.minSpeed &&
+                    car.vendor.toLowerCase().includes(options.filterBy.txt))
 
+    return cars
 }
 
 function getVendors() {
