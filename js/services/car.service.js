@@ -23,8 +23,8 @@ function removeCar(carId) {
     _saveCarsToStorage()
 }
 
-function addCar(vendor) {
-    var car = _createCar(vendor)
+function addCar(vendor, maxSpeed) {
+    var car = _createCar(vendor, maxSpeed)
     gCars.unshift(car)
 
     _saveCarsToStorage()

@@ -13,7 +13,7 @@ function onInit() {
 function renderVendors() {
     const elVendorLists = document.querySelectorAll('.vendor-list')
     const vendors = getVendors()
-    
+
     const strHtmls = vendors.map(vendor => `<option>${vendor}</option>`)
     elVendorLists.forEach(elList => elList.innerHTML += strHtmls.join(''))
 }
@@ -48,12 +48,8 @@ function onRemoveCar(carId) {
 }
 
 function onAddCar() {
-    var vendor = prompt('vendor?')
-    if (!vendor) return
-
-    const car = addCar(vendor)
-    renderCars()
-    flashMsg(`Car Added (id: ${car.id})`)
+    const elModal = document.querySelector('.car-edit-modal')
+    elModal.showModal()
 }
 
 function onUpdateCar(carId) {
@@ -68,6 +64,7 @@ function onUpdateCar(carId) {
 }
 
 function onSaveCar() {
+    const elForm = document.querySelector('.car-edit-modal form')
     const elVendor = document.querySelector('.car-edit-modal select')
     const elMaxSpeed = document.querySelector('.car-edit-modal input')
     
@@ -75,6 +72,8 @@ function onSaveCar() {
     const maxSpeed = elMaxSpeed.value
 
     // TODO Save the car
+    const car = addCar(vendor, maxSpeed)
+    elForm.reset()
 
     renderCars()
     flashMsg(`Car Saved (id: ${car.id})`)
