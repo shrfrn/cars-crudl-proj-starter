@@ -5,6 +5,7 @@ var gCarToEdit = null
 const gQueryOptions = {
     filterBy: { txt: '', minSpeed: 0 },
     sortBy: {},
+    page: { idx: 0, size: 4 },
 }
 
 function onInit() {
@@ -148,13 +149,20 @@ function onSetSortBy() {
 }
 
 function onNextPage() {
-    console.log('Getting next page...')
+    const carCount = getCarCount(gQueryOptions)
+    if(carCount > (gQueryOptions.page.idx + 1) * gQueryOptions.page.size){
+        gQueryOptions.page.idx++
+    } else {
+        gQueryOptions.page.idx = 0
+    }
+    renderCars()
 }
 
 // Query Params
 
 function readQueryParams() {
     const queryParams = new URLSearchParams(window.location.search)
+    
     options.filterBy = {
         txt: queryParams.get('vendor') || '',
         minSpeed: +queryParams.get('minSpeed') || 0

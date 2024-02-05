@@ -8,16 +8,30 @@ const gVendors = ['fiak', 'audu', 'subali', 'mitsu']
 _createCars()
 
 function getCars(options = {}) {
-    const cars = gCars.filter(car => 
-        car.maxSpeed >= options.filterBy.minSpeed &&
-        car.vendor.toLowerCase().includes(options.filterBy.txt))
+    var cars = _filterCars(options.filterBy)
         
     if(options.sortBy.vendor){
         cars.sort((car1, car2) => car1.vendor.localeCompare(car2.vendor) * options.sortBy.maxSpeed)
     } else if(options.sortBy.maxSpeed) {
         cars.sort((car1, car2) => (car1.maxSpeed - car2.maxSpeed) * options.sortBy.maxSpeed)
     }
+
+    if(options.page) {
+        const startIdx = options.page.idx * options.page.size
+        cars = cars.slice(startIdx, startIdx + options.page.size)
+    }
+
     return cars
+}
+
+function _filterCars(filterBy) {
+    return gCars.filter(car => 
+        car.maxSpeed >= filterBy.minSpeed &&
+        car.vendor.toLowerCase().includes(filterBy.txt))
+}
+
+function getCarCount(options) {
+    return _filterCars(options.filterBy).length
 }
 
 function getVendors() {
