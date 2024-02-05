@@ -35,9 +35,11 @@ function getCarById(carId) {
     return gCars.find(car => carId === car.id)
 }
 
-function updateCar(carId, newSpeed) {
+function updateCar(carId, vendor, maxSpeed) {
     const car = gCars.find(car => car.id === carId)
-    car.maxSpeed = newSpeed
+    
+    car.vendor = vendor
+    car.maxSpeed = maxSpeed
 
     _saveCarsToStorage()
     return car

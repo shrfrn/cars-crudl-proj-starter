@@ -1,6 +1,8 @@
 'use strict'
 
-const options = {
+var gCarToEdit = null
+
+const gQueryOptions = {
     filterBy: { txt: '', minSpeed: 0 },
     sortBy: {},
 }
@@ -53,26 +55,36 @@ function onAddCar() {
 }
 
 function onUpdateCar(carId) {
-    const car = getCarById(carId)
+    const elModal = document.querySelector('.car-edit-modal')
+    
+    const elVendor = elModal.querySelector('select')
+    const elMaxSpeed = elModal.querySelector('input')
+    const elCarImg = elModal.querySelector('img')
+    
+    gCarToEdit = getCarById(carId)
+    
+    elVendor.value = gCarToEdit.vendor
+    elMaxSpeed.value = gCarToEdit .maxSpeed
+    elCarImg.src = `img/${gCarToEdit.vendor}.png`
 
-    var newSpeed = +prompt('Speed?', car.maxSpeed)
-    if (!newSpeed || car.maxSpeed === newSpeed) return 
-
-    const updatedCar = updateCar(carId, newSpeed)
-    renderCars()
-    flashMsg(`Speed updated to: ${updatedCar.maxSpeed}`)
+    elModal.showModal()
 }
 
 function onSaveCar() {
     const elForm = document.querySelector('.car-edit-modal form')
-    const elVendor = document.querySelector('.car-edit-modal select')
-    const elMaxSpeed = document.querySelector('.car-edit-modal input')
+    
+    const elVendor = elForm.querySelector('select')
+    const elMaxSpeed = elForm.querySelector('input')
     
     const vendor = elVendor.value
     const maxSpeed = elMaxSpeed.value
 
-    // TODO Save the car
-    const car = addCar(vendor, maxSpeed)
+    if(gCarToEdit) {
+        var car = updateCar(gCarToEdit.id, vendor, maxSpeed)
+        gCarToEdit = null
+    } else {
+        var car = addCar(vendor, maxSpeed)
+    }
     elForm.reset()
 
     renderCars()
