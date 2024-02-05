@@ -16,7 +16,7 @@
                 <legend>Filter & Sorting</legend>
 
                 <div class="filter-by">
-                    <select onchange="onSetFilterBy({vendor: this.value})">
+                    <select class="vendor-list" onchange="onSetFilterBy({vendor: this.value})">
                         <option value="">Select vendor</option>
                         <option>audu</option>
                         <option>fiak</option>
@@ -66,7 +66,7 @@
             <form onsubmit="onSaveCar()" method="dialog">
                 <h2>Add Car</h2>
                 <img src="" alt="">
-                <select onchange="onSelectVendor(this)">
+                <select class="vendor-list" onchange="onSelectVendor(this)">
                     <option value="">Choose vendor...</option>
                     <option>audu</option>
                     <option>mitsu</option>
