@@ -3,11 +3,17 @@
 const STORAGE_KEY = 'carDB'
 
 var gCars
+const gVendors = ['fiak', 'audu', 'subali', 'mitsu'] 
 
 _createCars()
 
 function getCars(options = {}) {
     return gCars
+
+}
+
+function getVendors() {
+    return gVendors
 }
 
 function removeCar(carId) {

@@ -6,7 +6,16 @@ const options = {
 }
 
 function onInit() {
+    renderVendors()
     renderCars()
+}
+
+function renderVendors() {
+    const elVendorLists = document.querySelectorAll('.vendor-list')
+    const vendors = getVendors()
+    
+    const strHtmls = vendors.map(vendor => `<option>${vendor}</option>`)
+    elVendorLists.forEach(elList => elList.innerHTML += strHtmls.join(''))
 }
 
 function renderCars() {
