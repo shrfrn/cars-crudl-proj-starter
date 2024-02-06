@@ -30,8 +30,9 @@ function _filterCars(filterBy) {
         car.vendor.toLowerCase().includes(filterBy.txt))
 }
 
-function getCarCount(options) {
-    return _filterCars(options.filterBy).length
+function getPageCount(options) {
+	const cars = _filterCars(options.filterBy)
+	return Math.ceil(cars.length / options.page.size)
 }
 
 function getVendors() {

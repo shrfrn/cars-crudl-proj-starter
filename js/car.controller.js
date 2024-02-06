@@ -149,8 +149,7 @@ function onSetSortBy() {
 }
 
 function onNextPage() {
-    const carCount = getCarCount(gQueryOptions)
-    if(carCount > (gQueryOptions.page.idx + 1) * gQueryOptions.page.size){
+    if(getPageCount(gQueryOptions) > gQueryOptions.page.idx + 1) {
         gQueryOptions.page.idx++
     } else {
         gQueryOptions.page.idx = 0
