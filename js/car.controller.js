@@ -10,6 +10,7 @@ const gQueryOptions = {
 
 function onInit() {
     renderVendors()
+    readQueryParams()
     renderCars()
 }
 
@@ -130,6 +131,9 @@ function onSetFilterBy() {
     gQueryOptions.filterBy.txt = elVendor.value
     gQueryOptions.filterBy.minSpeed = elMinSpeed.value
 
+    gQueryOptions.page.idx = 0
+    
+    setQueryParams()
     renderCars()
 }
 
@@ -145,6 +149,8 @@ function onSetSortBy() {
     } else if (elSortBy.value === 'maxSpeed') {
         gQueryOptions.sortBy.maxSpeed = sortDir
     }
+    gQueryOptions.page.idx = 0
+    setQueryParams()
     renderCars()
 }
 
@@ -154,6 +160,7 @@ function onNextPage() {
     } else {
         gQueryOptions.page.idx = 0
     }
+    setQueryParams()
     renderCars()
 }
 
@@ -162,7 +169,7 @@ function onNextPage() {
 function readQueryParams() {
     const queryParams = new URLSearchParams(window.location.search)
     
-    options.filterBy = {
+    gQueryOptions.filterBy = {
         txt: queryParams.get('vendor') || '',
         minSpeed: +queryParams.get('minSpeed') || 0
     }
@@ -170,24 +177,24 @@ function readQueryParams() {
     if(queryParams.get('sortBy')) {
         const prop = queryParams.get('sortBy')
         const dir = queryParams.get('sortDir')
-        options.sortBy[prop] = dir
+        gQueryOptions.sortBy[prop] = dir
     }
 
     if(queryParams.get('pageIdx')) {
-        options.page.idx = +queryParams.get('pageIdx')
-        options.page.size = +queryParams.get('pageSize')
+        gQueryOptions.page.idx = +queryParams.get('pageIdx')
+        gQueryOptions.page.size = +queryParams.get('pageSize')
     }
     renderQueryParams()
 }
 
 function renderQueryParams() {
     
-    document.querySelector('.filter-by select').value = options.filterBy.txt
-    document.querySelector('.filter-by input').value = options.filterBy.minSpeed
+    document.querySelector('.filter-by select').value = gQueryOptions.filterBy.txt
+    document.querySelector('.filter-by input').value = gQueryOptions.filterBy.minSpeed
     
-    const sortKeys = Object.keys(options.sortBy)
+    const sortKeys = Object.keys(gQueryOptions.sortBy)
     const sortBy = sortKeys[0]
-    const dir = options.sortBy[sortKeys[0]]
+    const dir = gQueryOptions.sortBy[sortKeys[0]]
 
     document.querySelector('.sort-by select').value = sortBy || ''
     document.querySelector('.sort-by input').checked = (dir === -1) ? true : false
@@ -196,18 +203,18 @@ function renderQueryParams() {
 function setQueryParams() {
     const queryParams = new URLSearchParams()
 
-    queryParams.set('vendor', options.filterBy.txt)
-    queryParams.set('minSpeed', options.filterBy.minSpeed)
+    queryParams.set('vendor', gQueryOptions.filterBy.txt)
+    queryParams.set('minSpeed', gQueryOptions.filterBy.minSpeed)
 
-    const sortKeys = Object.keys(options.sortBy)
+    const sortKeys = Object.keys(gQueryOptions.sortBy)
     if(sortKeys.length) {
         queryParams.set('sortBy', sortKeys[0])
-        queryParams.set('sortDir', options.sortBy[sortKeys[0]])
+        queryParams.set('sortDir', gQueryOptions.sortBy[sortKeys[0]])
     }
 
-    if(options.page) {
-        queryParams.set('pageIdx', options.page.idx)
-        queryParams.set('pageSize', options.page.size)
+    if(gQueryOptions.page) {
+        queryParams.set('pageIdx', gQueryOptions.page.idx)
+        queryParams.set('pageSize', gQueryOptions.page.size)
     }
 
     const newUrl = 
