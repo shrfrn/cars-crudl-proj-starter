@@ -59,8 +59,10 @@ function onUpdateCar(carId) {
 }
 
 function onSaveCar() {
-    const elVendor = document.querySelector('.car-edit-modal select')
-    const elMaxSpeed = document.querySelector('.car-edit-modal input')
+    const elForm = document.querySelector('.car-edit-modal form')
+
+    const elVendor = elForm.querySelector('select')
+    const elMaxSpeed = elForm.querySelector('input')
     
     const vendor = elVendor.value
     const maxSpeed = elMaxSpeed.value
