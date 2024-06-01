@@ -80,7 +80,7 @@ function onSelectVendor(elVendor) {
     elCarImg.src = `img/${elVendor.value}.png`
 }
 
-function onCloseCarEdit() {
+function onCloseCarEditModal() {
     document.querySelector('.car-edit-modal').close()
 }
 
@@ -88,7 +88,7 @@ function onCloseCarEdit() {
 
 function onReadCar(carId) {
     const car = getCarById(carId)
-    const elModal = document.querySelector('.modal')
+    const elModal = document.querySelector('.car-details-modal')
 
     elModal.querySelector('h3').innerText = car.vendor
     elModal.querySelector('h4 span').innerText = car.maxSpeed
@@ -98,8 +98,8 @@ function onReadCar(carId) {
     elModal.showModal()
 }
 
-function onCloseModal() {
-    document.querySelector('.modal').close()
+function onCloseCarDetailsModal() {
+    document.querySelector('.car-details-modal').close()
 }
 
 // Filter, Sort & Pagination
