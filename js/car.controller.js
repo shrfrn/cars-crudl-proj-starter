@@ -140,7 +140,7 @@ function readQueryParams() {
 
 function renderQueryParams() {
     
-    document.querySelector('.filter-by select').value = gQueryOptions.filterBy.txt
+    document.querySelector('.filter-by input').value = gQueryOptions.filterBy.txt
     document.querySelector('.filter-by input').value = gQueryOptions.filterBy.minSpeed
     
     const sortKeys = Object.keys(gQueryOptions.sortBy)
