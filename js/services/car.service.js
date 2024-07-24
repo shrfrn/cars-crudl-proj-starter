@@ -1,44 +1,39 @@
 'use strict'
 
-const STORAGE_KEY = 'carDB'
+const STORAGE_KEY = 'car'
+const gVendors = ['fiak', 'audu', 'subali', 'mitsu'] 
 
 var gCars
-const gVendors = ['fiak', 'audu', 'subali', 'mitsu'] 
 
 _createCars()
 
 function getCars(options = {}) {
-    var cars = _filterCars(options.filterBy)
+    var cars = gCars
+    
+    if (options?.filterBy?.minSpeed) {
+        cars = cars.filter(car => car.maxSpeed >= options.filterBy.minSpeed)
+    }
         
+    if (options?.filterBy?.txt) {
+        cars = cars.filter(car => 
+            car.vendor.toLowerCase().includes(options.filterBy.txt))
+    }
+
     if(options?.sortBy?.vendor){
         cars.sort((car1, car2) => car1.vendor.localeCompare(car2.vendor) * options.sortBy.maxSpeed)
     } else if(options?.sortBy?.maxSpeed) {
         cars.sort((car1, car2) => (car1.maxSpeed - car2.maxSpeed) * options.sortBy.maxSpeed)
     }
 
-    if(options?.page) {
-        const startIdx = options.page.idx * options.page.size
-        cars = cars.slice(startIdx, startIdx + options.page.size)
-    }
-
     return cars
-}
-
-function _filterCars(filterBy) {
-    if(!filterBy) return gCars
-
-    return gCars.filter(car => 
-        car.maxSpeed >= filterBy.minSpeed &&
-        car.vendor.toLowerCase().includes(filterBy.txt))
-}
-
-function getPageCount(options) {
-	const cars = _filterCars(options.filterBy)
-	return Math.ceil(cars.length / options.page.size)
 }
 
 function getVendors() {
     return gVendors
+}
+
+function getCarById(carId) {
+    return gCars.find(car => carId === car.id)
 }
 
 function removeCar(carId) {
@@ -54,10 +49,6 @@ function addCar(vendor, maxSpeed) {
 
     _saveCarsToStorage()
     return car
-}
-
-function getCarById(carId) {
-    return gCars.find(car => carId === car.id)
 }
 
 function updateCar(carId, vendor, maxSpeed) {

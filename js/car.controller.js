@@ -5,7 +5,6 @@ var gCarToEdit = null
 const gQueryOptions = {
     filterBy: { txt: '', minSpeed: 0 },
     sortBy: {},
-    page: { idx: 0, size: 4 },
 }
 
 function onInit() {
@@ -131,8 +130,6 @@ function onSetFilterBy() {
     gQueryOptions.filterBy.txt = elVendor.value
     gQueryOptions.filterBy.minSpeed = elMinSpeed.value
 
-    gQueryOptions.page.idx = 0
-    
     setQueryParams()
     renderCars()
 }
@@ -149,17 +146,7 @@ function onSetSortBy() {
     } else if (elSortBy.value === 'maxSpeed') {
         gQueryOptions.sortBy.maxSpeed = sortDir
     }
-    gQueryOptions.page.idx = 0
-    setQueryParams()
-    renderCars()
-}
 
-function onNextPage() {
-    if(getPageCount(gQueryOptions) > gQueryOptions.page.idx + 1) {
-        gQueryOptions.page.idx++
-    } else {
-        gQueryOptions.page.idx = 0
-    }
     setQueryParams()
     renderCars()
 }
@@ -178,11 +165,6 @@ function readQueryParams() {
         const prop = queryParams.get('sortBy')
         const dir = queryParams.get('sortDir')
         gQueryOptions.sortBy[prop] = dir
-    }
-
-    if(queryParams.get('pageIdx')) {
-        gQueryOptions.page.idx = +queryParams.get('pageIdx')
-        gQueryOptions.page.size = +queryParams.get('pageSize')
     }
     renderQueryParams()
 }
@@ -210,11 +192,6 @@ function setQueryParams() {
     if(sortKeys.length) {
         queryParams.set('sortBy', sortKeys[0])
         queryParams.set('sortDir', gQueryOptions.sortBy[sortKeys[0]])
-    }
-
-    if(gQueryOptions.page) {
-        queryParams.set('pageIdx', gQueryOptions.page.idx)
-        queryParams.set('pageSize', gQueryOptions.page.size)
     }
 
     const newUrl = 
