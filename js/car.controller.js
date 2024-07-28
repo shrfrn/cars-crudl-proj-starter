@@ -51,6 +51,8 @@ function onRemoveCar(carId) {
 }
 
 function onAddCar() {
+    resetCarEditModal()
+    
     const elModal = document.querySelector('.car-edit-modal')
     elModal.showModal()
 }
@@ -101,6 +103,14 @@ function onSelectVendor(elVendor) {
 
 function onCloseCarEdit() {
     document.querySelector('.car-edit-modal').close()
+}
+
+function resetCarEditModal() {
+    const elForm = document.querySelector('.car-edit-modal form')
+    const elImg = elForm.querySelector('img')
+
+    elForm.reset()
+    elImg.src = ''
 }
 
 // Details modal
