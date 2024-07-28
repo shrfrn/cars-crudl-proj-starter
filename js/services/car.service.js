@@ -8,7 +8,7 @@ var gCars
 _createCars()
 
 function getCars(options = {}) {
-    var cars = gCars
+    var cars = gCars.slice()
     
     if (options?.filterBy?.minSpeed) {
         cars = cars.filter(car => car.maxSpeed >= options.filterBy.minSpeed)
@@ -20,7 +20,7 @@ function getCars(options = {}) {
     }
 
     if(options?.sortBy?.vendor){
-        cars.sort((car1, car2) => car1.vendor.localeCompare(car2.vendor) * options.sortBy.maxSpeed)
+        cars.sort((car1, car2) => car1.vendor.localeCompare(car2.vendor) * options.sortBy.vendor)
     } else if(options?.sortBy?.maxSpeed) {
         cars.sort((car1, car2) => (car1.maxSpeed - car2.maxSpeed) * options.sortBy.maxSpeed)
     }
