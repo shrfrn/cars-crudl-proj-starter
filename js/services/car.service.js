@@ -28,10 +28,6 @@ function getCars(options = {}) {
     return cars
 }
 
-function getVendors() {
-    return gVendors
-}
-
 function getCarById(carId) {
     return gCars.find(car => carId === car.id)
 }
@@ -59,6 +55,10 @@ function updateCar(carId, vendor, maxSpeed) {
 
     _saveCarsToStorage()
     return car
+}
+
+function getVendors() {
+    return gVendors
 }
 
 function _createCar(vendor, maxSpeed) {

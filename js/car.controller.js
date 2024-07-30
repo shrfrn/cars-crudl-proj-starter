@@ -131,7 +131,7 @@ function onCloseModal() {
     document.querySelector('.modal').close()
 }
 
-// Filter, Sort & Pagination
+// Filter & Sort
 
 function onSetFilterBy() {
     const elVendor = document.querySelector('.filter-by .vendor-list')
