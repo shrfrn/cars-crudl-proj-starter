@@ -120,15 +120,18 @@ function onNextPage() {
 
 function readQueryParams() {
     const queryParams = new URLSearchParams(window.location.search)
+    
     gQueryOptions.filterBy = {
         txt: queryParams.get('vendor') || '',
         minSpeed: +queryParams.get('minSpeed') || 0
     }
 
-    if(queryParams.get('sortBy')) {
-        const prop = queryParams.get('sortBy')
+    if(queryParams.get('sortField')) {
+        const prop = queryParams.get('sortField')
         const dir = queryParams.get('sortDir')
-        gQueryOptions.sortBy[prop] = dir
+
+        gQueryOptions.sortBy.sortField = prop
+        gQueryOptions.sortBy.sortDir = dir
     }
 
     if(queryParams.get('pageIdx')) {
@@ -140,15 +143,14 @@ function readQueryParams() {
 
 function renderQueryParams() {
     
-    document.querySelector('.filter-by input').value = gQueryOptions.filterBy.txt
-    document.querySelector('.filter-by input').value = gQueryOptions.filterBy.minSpeed
+    document.querySelector('.vendor').value = gQueryOptions.filterBy.txt
+    document.querySelector('.min-speed').value = gQueryOptions.filterBy.minSpeed
     
-    const sortKeys = Object.keys(gQueryOptions.sortBy)
-    const sortBy = sortKeys[0]
-    const dir = gQueryOptions.sortBy[sortKeys[0]]
+    const sortField = gQueryOptions.sortBy.sortField
+    const sortDir = +gQueryOptions.sortBy.sortDir
 
-    document.querySelector('.sort-by select').value = sortBy || ''
-    document.querySelector('.sort-by input').checked = (dir === -1) ? true : false
+    document.querySelector('.sort-by select').value = sortField || ''
+    document.querySelector('.sort-by input').checked = (sortDir === -1) ? true : false
 }
 
 function setQueryParams() {
@@ -157,10 +159,9 @@ function setQueryParams() {
     queryParams.set('vendor', gQueryOptions.filterBy.txt)
     queryParams.set('minSpeed', gQueryOptions.filterBy.minSpeed)
 
-    const sortKeys = Object.keys(gQueryOptions.sortBy)
-    if(sortKeys.length) {
-        queryParams.set('sortBy', sortKeys[0])
-        queryParams.set('sortDir', gQueryOptions.sortBy[sortKeys[0]])
+    if(gQueryOptions.sortBy.sortField) {
+        queryParams.set('sortField', gQueryOptions.sortBy.sortField)
+        queryParams.set('sortDir', gQueryOptions.sortBy.sortDir)
     }
 
     if(gQueryOptions.page) {
