@@ -16,11 +16,11 @@
                 <legend>Filter & Sorting</legend>
 
                 <div class="filter-by">
-                    <input oninput="onSetFilterBy({ txt: this.value })" placeholder="vendor" type="text">
+                    <input oninput="onSetFilterBy()" placeholder="vendor" type="text">
                     <label>
                         <span>Min Speed:</span>
                         <input type="range" min="0" max="300" value="50" 
-                               onchange="this.title=this.value;onSetFilterBy({ minSpeed: +this.value })" />
+                               onchange="this.title=this.value;onSetFilterBy()" />
                     </label>
                 </div>
                 
