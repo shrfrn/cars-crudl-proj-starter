@@ -3,6 +3,7 @@
 const gQueryOptions = {
     filterBy: { txt: '', minSpeed: 0 },
     sortBy: {},
+    page: { idx: 0, size: 4 },
 }
 
 function onInit() {

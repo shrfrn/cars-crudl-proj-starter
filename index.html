@@ -25,14 +25,14 @@
                 </div>
                 
                 <div class="sort-by">
-                    <select onchange="onSetSortBy()">
+                    <select class="sort-field" onchange="onSetSortBy()">
                         <option value="">Select Sorting</option>
                         <option value="vendor">By Vendor</option>
                         <option value="maxSpeed">Speed</option>
                     </select>
                     <label>
                         <span>Descending</span>
-                        <input class="sort-desc" type="checkbox" oninput="onSetSortBy()" />
+                        <input class="sort-dir" type="checkbox" oninput="onSetSortBy()" />
                     </label>
                 </div>
             </fieldset> 
